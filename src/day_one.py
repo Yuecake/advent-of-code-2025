@@ -11,7 +11,8 @@ Please see the attached document for the new combination."
 def parse_instructions_file() -> int:
     """Parses the input to receive instructions line by line, then processes the current position of the dial.
     
-    Returns the final position of the dial after processing the instructions file."""
+    returns: 
+        - the final position of the dial after processing the instructions file."""
 
     # Dial position starts at 0
     current_position = 50
@@ -40,19 +41,17 @@ def parse_instructions_file() -> int:
 
 def split_instruction(line: str) -> tuple[str, int]:
     """A function that takes a line from the instructions file and splits the 
-    instruction based on first letter and remaining number and stores it to a dictionary.
+    instruction based on first letter and remaining number into a direction and distance.
     
-    Returns the direction and distance of the individual instruction."""
+    returns: 
+        - the direction and distance of the individual instruction."""
 
     direction = line[0]
     print(f"The direction is: {direction}")
     distance = line[1:].strip()
     print(f"The distance is: {distance}")
 
-    instruction_direction = direction
-    instruction_distance = int(distance)
-
-    return instruction_direction, instruction_distance
+    return direction, int(distance)
 
 
 def turn_dial(current_position: int, direction: str, distance: int) -> int:
@@ -60,13 +59,14 @@ def turn_dial(current_position: int, direction: str, distance: int) -> int:
     in the correct direction and for the correct amount of turns. Utilises modulo (%) to wrap between 0 and 99.
     There are 100 possible positions on the dial 0 -> 99, so we modulo 100.
 
-    Returns the new current position of the dial."""
+    returns: 
+        - the new current position of the dial."""
 
 
     if direction == "L":
         addition = (current_position + distance)
         new_position = addition % 100
-    if direction == "R":
+    else:
         subtraction = (current_position - distance)
         new_position = subtraction % 100
 
