@@ -6,19 +6,10 @@ A document taped to the wall helpfully explains:
 "Due to new security protocols, the password is locked in the safe below. 
 Please see the attached document for the new combination."
 """
-from collections.abc import Iterator
 
-def read_file_lines(file) -> Iterator[str]:
-    """Opens a given file and yields each line as needed.
-    
-    yields:
-        - a line in the file."""
+from helpers import read_file_lines
 
-    with open(file) as f:
-        for line in f:
-            yield line
-
-def parse_instructions_file_part_1() -> int:
+def parse_instructions_file() -> int:
     """Parses the input to receive instructions line by line, then processes the current position of the dial.
     
     returns: 
@@ -26,7 +17,7 @@ def parse_instructions_file_part_1() -> int:
 
     # Dial position starts at 50
     current_position = 50
-    zero_count = 0
+    final_zero_count = 0
 
     instructions = "day_one_inputs.txt"
 
@@ -38,17 +29,14 @@ def parse_instructions_file_part_1() -> int:
 
         print(f"Resulting instruction: {direction, distance}")
 
-        current_position = turn_dial(current_position, direction, distance)
+        current_position, zeroes_touched_during_calc = turn_dial(current_position, direction, distance)
 
         if current_position == 0:
-            zero_count += 1
+            final_zero_count += 1
 
     # This should be the FINAL "zero count" for the puzzle
-    print(f"The final zero count is: {zero_count}")
-    return zero_count
-
-def parse_instructions_file_part_2() -> int:
-    pass
+    print(f"The final zero count is: {final_zero_count}")
+    return final_zero_count
 
 
 def split_instruction(line: str) -> tuple[str, int]:
@@ -59,14 +47,12 @@ def split_instruction(line: str) -> tuple[str, int]:
         - the direction and distance of the individual instruction."""
 
     direction = line[0]
-    print(f"The direction is: {direction}")
     distance = line[1:].strip()
-    print(f"The distance is: {distance}")
 
     return direction, int(distance)
 
 
-def turn_dial(current_position: int, direction: str, distance: int) -> int:
+def turn_dial(current_position: int, direction: str, distance: int) -> tuple[int, int]:
     """Takes the parsed direction and distance from the instructions, and turns the dial 
     in the correct direction and for the correct amount of turns. Utilises modulo (%) to wrap between 0 and 99.
     There are 100 possible positions on the dial 0 -> 99, so we modulo 100.
@@ -74,6 +60,7 @@ def turn_dial(current_position: int, direction: str, distance: int) -> int:
     returns: 
         - the new current position of the dial."""
 
+    zeroes_touched_during_calc = 0
 
     if direction == "L":
         addition = (current_position + distance)
@@ -82,8 +69,33 @@ def turn_dial(current_position: int, direction: str, distance: int) -> int:
         subtraction = (current_position - distance)
         new_position = subtraction % 100
 
-    return new_position
+    return new_position, zeroes_touched_during_calc
+
+
+def times_dial_passed_zero(current_position: int, direction: str, distance: int):
+    """Calculates how many times 0 is passed when rotating the dial for the next instruction.
+    Should not count the zeroes where the dial might start or end on 0.
+    
+    Handles logic for part 2 of the AoC 2025 day 1.
+    
+    returns:
+        - number of times 0 is passed."""
+
+    zeroes_touched_during_calc = 0
+
+    if direction == "L":
+        zeroes = 0
+        calculation = current_position + distance 
+        zeroes += calculation // 100 # Use floor division to count how many times 0 appears in total in the calc
+        if calculation % 100 == 0: # minus a zero from calculations that started or have a final landing on 0
+            zeroes -= 1
+        zeroes_touched_during_calc += zeroes
+    else:
+        # Brain hurt
+        pass
+
+    return zeroes_touched_during_calc
 
 
 if __name__ == "__main__":
-    parse_instructions_file_part_1()
+    parse_instructions_file()
