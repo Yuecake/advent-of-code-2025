@@ -8,3 +8,6 @@ wheels/
 
 # Virtual environments
 .venv
+
+# Inputs
+src/day_one_inputs.txt
