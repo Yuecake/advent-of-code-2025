@@ -14,7 +14,7 @@ def parse_instructions_file() -> int:
     returns: 
         - the final position of the dial after processing the instructions file."""
 
-    # Dial position starts at 0
+    # Dial position starts at 50
     current_position = 50
     zero_count = 0
 
