@@ -6,9 +6,19 @@ A document taped to the wall helpfully explains:
 "Due to new security protocols, the password is locked in the safe below. 
 Please see the attached document for the new combination."
 """
+from collections.abc import Iterator
 
+def read_file_lines(file) -> Iterator[str]:
+    """Opens a given file and yields each line as needed.
+    
+    yields:
+        - a line in the file."""
 
-def parse_instructions_file() -> int:
+    with open(file) as f:
+        for line in f:
+            yield line
+
+def parse_instructions_file_part_1() -> int:
     """Parses the input to receive instructions line by line, then processes the current position of the dial.
     
     returns: 
@@ -20,23 +30,25 @@ def parse_instructions_file() -> int:
 
     instructions = "day_one_inputs.txt"
 
-    with open(instructions) as i:
-        for line in i:
-            print(f"Reading line: {line.strip()}")
-            print(f"Current Dial Position: {current_position}")
+    for line in read_file_lines(instructions):
+        print(f"Reading line: {line.strip()}")
+        print(f"Current Dial Position: {current_position}")
 
-            direction, distance = split_instruction(line)
+        direction, distance = split_instruction(line)
 
-            print(f"Resulting instruction: {direction, distance}")
+        print(f"Resulting instruction: {direction, distance}")
 
-            current_position = turn_dial(current_position, direction, distance)
+        current_position = turn_dial(current_position, direction, distance)
 
-            if current_position == 0:
-                zero_count += 1
+        if current_position == 0:
+            zero_count += 1
 
     # This should be the FINAL "zero count" for the puzzle
     print(f"The final zero count is: {zero_count}")
     return zero_count
+
+def parse_instructions_file_part_2() -> int:
+    pass
 
 
 def split_instruction(line: str) -> tuple[str, int]:
@@ -74,4 +86,4 @@ def turn_dial(current_position: int, direction: str, distance: int) -> int:
 
 
 if __name__ == "__main__":
-    parse_instructions_file()
+    parse_instructions_file_part_1()
