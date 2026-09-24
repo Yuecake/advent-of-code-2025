@@ -20,12 +20,12 @@ def parse_instructions_file() -> int:
     final_zero_count = 0
     zeroes_touched_during_calc = 0
 
-    instructions = "day_one_inputs.txt"
+    instructions = "day_one/day_one_inputs.txt"
 
     for line in read_file_lines(instructions):
         direction, distance = split_instruction(line)
 
-        zeroes_touched_during_calc = times_dial_passed_zero(current_position, direction, distance)
+        zeroes_touched_during_calc += times_dial_passed_zero(current_position, direction, distance)
 
         current_position = turn_dial(current_position, direction, distance)
 
@@ -83,6 +83,7 @@ def times_dial_passed_zero(current_position: int, direction: str, distance: int)
     total_zeroes_passed = 0
 
     if direction == "R":
+        zeroes_passed = 0
         calculation = current_position + distance 
         zeroes_passed += calculation // 100 # Every complete 100 positions means the dial crossed 0 once
         if calculation % 100 == 0: # minus a zero from calculations that started or have a final landing on 0
@@ -90,6 +91,7 @@ def times_dial_passed_zero(current_position: int, direction: str, distance: int)
         total_zeroes_passed += zeroes_passed
 
     else:
+        zeroes_passed = 0
         calculation = current_position - distance
         zeroes_passed -= calculation // 100 # The floor division results will be minus numbers, therefore, cancel out the minus to get the result
         if current_position == 0:
