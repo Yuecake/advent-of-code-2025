@@ -62,12 +62,10 @@ def turn_dial(current_position: int, direction: str, distance: int) -> int:
 
     if direction == "R":
         addition = (current_position + distance)
-        print(f"Calculating {current_position} + {distance} and it is equal to {addition}")
         new_position = addition % 100
 
     else:
         subtraction = (current_position - distance)
-        print(f"Calculating {current_position} - {distance} and it is equal to {subtraction}")
         new_position = subtraction % 100
 
     return new_position
