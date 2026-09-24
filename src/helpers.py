@@ -2,7 +2,7 @@
 
 from collections.abc import Iterator
 
-def read_file(file: str) -> Iterator:
+def read_file(file: str) -> Iterator[str]:
     """Opens a file and returns the contents.
     
     returns:
