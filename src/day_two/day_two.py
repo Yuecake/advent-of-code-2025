@@ -18,15 +18,21 @@ def find_invalid_ids(product_id) -> str:
 
     invalid_ids = []
 
-    # Split the value by the -
-    for x in product_id.split('-'):
-        print(f"Examining {x} for repeating digits!")
-        for n in x:
-            if x.count(n) > 0:
-                print(f"{x} is a potential culprit!")
-                invalid_ids.append(x)
+    # First, check if there are non-unique digits
+    if has_repeats(product_id):
+        invalid_ids.append(product_id)
 
     return invalid_ids
+
+def has_repeats(n) -> bool:
+    """Checks every individual character in a string and stores to a set. 
+    If the set is shorter than the total length, returns True."""
+
+    print(f"The current set: {len(set(n))}")
+    print(f"The current ID: {n}")
+    print(f"The current total length: {len(n)}")
+
+    return len(set(n)) < len(n)
 
 def add_and_return_invalid_ids(id) -> int:
     pass
